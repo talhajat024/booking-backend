@@ -1,0 +1,16 @@
+---
+alwaysApply: true
+---
+This is a NestJS + TypeORM + PostgreSQL booking backend.
+
+- Use DTOs with class-validator for every request body.
+- Database columns are snake_case, mapped with @Column({ name: '...' }).
+- Never return passwordHash in any response.
+- One module per feature (users, auth, bookings).
+- Only change what I ask for. Don't add extra features or refactor other files.
+- Briefly explain what you changed and why, because I'm learning.
+
+When unsure about an API or option, read the official docs instead of guessing:
+- NestJS: https://docs.nestjs.com
+- TypeORM: https://typeorm.io
+- class-validator: https://github.com/typestack/class-validator
