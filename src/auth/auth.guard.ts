@@ -15,7 +15,7 @@ import {
   export class AuthGuard implements CanActivate {
     constructor(private jwtService: JwtService) {}
   
-    async canActivate(context: ExecutionContext): Promise<boolean> {
+    async canActivate(context: ExecutionContext): Promise<boolean> {  
       const request = context.switchToHttp().getRequest<AuthRequest>();
       const [type, token] = request.headers.authorization?.split(' ') ?? [];
   
@@ -25,6 +25,7 @@ import {
   
       try {
         request['user'] = await this.jwtService.verifyAsync(token);
+        // console.log("Verified User: ", request['user']);
       } catch {
         throw new UnauthorizedException();
       }
