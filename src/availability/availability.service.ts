@@ -30,4 +30,8 @@ export class AvailabilityService {
         return this.availability.find({where:{businessId}});
     }
 
+    findByDay(businessId: number, dayOfWeek: number) {
+    return this.availability.findOne({ where: { businessId, dayOfWeek } });
+    }
+
 }

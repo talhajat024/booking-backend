@@ -17,4 +17,8 @@ export class ServicesService {
     findByBusiness(businessId:number){
         return this.services.find({where:{businessId}});
     }
+
+    findById(id: number) {
+    return this.services.findOneBy({ id });
+    }
 }
