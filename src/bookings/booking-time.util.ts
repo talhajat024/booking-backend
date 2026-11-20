@@ -1,11 +1,13 @@
-// Treats "YYYY-MM-DD HH:MM" as a plain calendar value, no timezone involved.
+// Treats "YYYY-MM-DD HH:MM" as a plain calendar value, no timezone involved
 export function parseLocal(value: string): Date | null {
   console.log("parseLocal called with value:", value);
   const [datePart, timePart] = value.split(' ');
   const [y, m, d] = datePart.split('-').map(Number);
   const [hh, mm] = timePart.split(':').map(Number);
+  console.log("Parsed values - Year:", y, "Month:", m, "Day:", d, "Hour:", hh, "Minute:", mm);
 
   const date = new Date(Date.UTC(y, m - 1, d, hh, mm));
+  console.log("Constructed UTC date:", date.toISOString());
 
   // Date silently rolls over bad input (month 13 becomes January),
   // so compare the parts back to catch impossible dates.

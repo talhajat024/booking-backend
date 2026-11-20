@@ -15,11 +15,11 @@ export class Booking{
     @Column({name:'service_id'})
     serviceId:number;
 
-    @Column({name:'start_time',type:'timestamp'})
-    startTime:string;
-
-    @Column({name:'end_time',type:'timestamp'})
-    endTime:string;
+    @Column({ type: 'varchar', name: 'start_time' })
+    startTime: string;
+    
+    @Column({ type: 'varchar', name: 'end_time' })
+    endTime: string;
 
     @Column()
     status:string;
