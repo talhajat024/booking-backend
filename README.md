@@ -58,3 +58,29 @@ POST /bookings
 ```
 
 Returns `409` if the slot is taken and `400` if it's outside working hours or on a closed day.
+
+## Design decisions
+
+**Double-booking is prevented by the database, not just the code.**
+`bookings` has a PostgreSQL `EXCLUDE USING gist` constraint on `(business_id, tsrange(start_time, end_time))`. Two requests arriving at the same instant can't both pass an application-level check, but the database rejects the second one. The API catches error `23P01` and returns `409 Conflict`.
+
+**Cancelling keeps the row.**
+Cancel sets `status = 'cancelled'` rather than deleting. The constraint ignores cancelled rows (`WHERE status <> 'cancelled'`), so the slot is freed automatically while booking history stays intact.
+
+**Ownership is enforced in the service layer.**
+Guards check the role (`owner` or `customer`), and `assertOwner` checks that the owner actually owns the business in the URL. A customer's identity always comes from the JWT, never from the request body, so users can't act on other people's data.
+
+**The client never sends a business id when booking.**
+A booking's business is derived from the chosen service, so a customer can't attach a booking to a business that doesn't offer that service.
+
+**Times are stored as local wall-clock time.**
+Bookings use `TIMESTAMP` (no timezone) and are handled as plain `"YYYY-MM-DD HH:MM"` strings, which avoids server-timezone shifts. This assumes a business and its customers share a timezone. Supporting multiple zones would mean adding a `timezone` column (IANA name) to `businesses` and moving to `TIMESTAMPTZ`.
+
+**The schema is hand-written SQL.**
+TypeORM runs with `synchronize: false` and the schema lives in `database/schema.sql`, so schema changes are explicit and reviewable rather than applied automatically.
+
+## Roadmap
+
+- React frontend
+- AI features: business insights and summaries, an AI booking assistant, smart scheduling
+- Multi-timezone support
