@@ -25,7 +25,6 @@ import {
   
       try {
         request['user'] = await this.jwtService.verifyAsync(token);
-        // console.log("Verified User: ", request['user']);
       } catch {
         throw new UnauthorizedException();
       }
