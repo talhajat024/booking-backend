@@ -6,8 +6,19 @@ CREATE TABLE users (
   email VARCHAR(255) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
   role VARCHAR(20) NOT NULL,
+  email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+  verification_token_hash TEXT,
+  verification_expires_at TIMESTAMPTZ,
+  reset_token_hash TEXT,
+  reset_expires_at TIMESTAMPTZ,
   created_at TIMESTAMP DEFAULT NOW()
 );
+
+CREATE INDEX idx_users_verification_token_hash
+  ON users (verification_token_hash);
+
+CREATE INDEX idx_users_reset_token_hash
+  ON users (reset_token_hash);
 
 CREATE TABLE businesses (
   id SERIAL PRIMARY KEY,

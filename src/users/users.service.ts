@@ -15,8 +15,21 @@ export class UsersService {
         return this.users.findOneBy({email}); 
     }
 
+    // try this by not writing partial
     create(data: Partial<User>){
         return this.users.save(this.users.create(data));
+    }
+
+    findByVerificationHash(hash:string){
+        return this.users.findOne({where:{verificationTokenHash:hash}});
+    }
+
+    save(user:User){
+        return this.users.save(user);
+    }
+
+    findByResetTokenHash(hash: string) {
+    return this.users.findOne({ where: { resetTokenHash: hash } });
     }
 
 }

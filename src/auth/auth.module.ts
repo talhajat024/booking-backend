@@ -3,9 +3,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports:[UsersModule,
+    MailModule,
     JwtModule.registerAsync({
       global:true,
       useFactory:()=>({
